@@ -90,6 +90,11 @@ func convertRowToJSON(record []string) []byte {
 	m := mapAnyPool.Get().(map[string]any)
 
 	for i := 0; i < len(record); i++ {
+
+		if shouldSkip(uint(i)) {
+			continue
+		}
+
 		m[headers[i]] = getValue(record[i], uint(i))
 	}
 
@@ -104,14 +109,18 @@ func convertRowToJSON(record []string) []byte {
 
 }
 
-func getValue(rec string, i uint) any {
-
+func shouldSkip(i uint) bool {
 	if _, ok := keepCols[i]; !ok && len(keepCols) > 0 {
-		return ""
+		return true
 	}
 
+	return false
+}
+
+func getValue(rec string, i uint) any {
+
 	if rec == "" {
-		return rec
+		return nil
 	}
 
 	if _, ok := jsonCols[i]; !ok {
