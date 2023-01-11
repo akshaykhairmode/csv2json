@@ -54,7 +54,7 @@ func parseUintFlags(val string, m map[uint]struct{}) {
 		for _, v := range vals {
 			uintVal, err := strconv.ParseUint(v, 10, 64)
 			if err != nil {
-				logger.Fatal().Msg("jsonCol should be a number")
+				logger.Fatal().Msg("j or k values should be a number")
 			}
 			m[uint(uintVal)] = struct{}{}
 		}
